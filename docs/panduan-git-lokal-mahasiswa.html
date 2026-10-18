@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Panduan clone GitHub dan menjalankan aplikasi SIAKAD Laravel di localhost mahasiswa.">
+<title>Panduan Git dan Localhost - SIAKAD</title>
+<style>
+:root{--ink:#172033;--muted:#5c667a;--blue:#1e3a8a;--line:#e2e8f0;--paper:#fff;--wash:#f4f7fb;--code:#111827}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--wash);color:var(--ink);font:16px/1.72 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:white;padding:48px 24px}header .wrap,main{max-width:1440px;margin:auto}header h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.15;margin:0 0 12px}header p{max-width:850px;margin:0;color:#dbeafe;font-size:1.08rem}main{padding:28px 24px 64px}.page-layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:28px;align-items:start}.toc,.content{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 24px #1720330a}.toc{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow:auto;padding:22px}.toc h2{font-size:1.2rem;margin:0 0 12px}.toc ol{padding-left:24px;margin:0}.toc li{padding:4px 2px}.toc a{color:var(--blue);text-decoration:none}.toc a:hover{text-decoration:underline}.content{padding:34px 48px;min-width:0}.content h2{font-size:1.65rem;line-height:1.3;border-bottom:1px solid var(--line);padding-bottom:10px;margin:42px 0 16px;scroll-margin-top:20px}.content h2:first-of-type{margin-top:12px}.content h3{font-size:1.18rem;margin:26px 0 8px}.content p{margin:10px 0}.content ul,.content ol{padding-left:26px}.content li{padding-left:4px;margin:4px 0}.content code{font:.9em/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;background:#eef2ff;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}.content pre{background:var(--code);color:#e5e7eb;padding:18px 20px;border-radius:10px;overflow:auto;line-height:1.55;margin:16px 0}.content pre code{background:none;color:inherit;padding:0;white-space:pre}.content a{color:var(--blue)}footer{text-align:center;color:var(--muted);padding:0 20px 32px;font-size:.9rem}@media(max-width:900px){header{padding:36px 20px}main{padding:20px 14px 48px}.page-layout{grid-template-columns:1fr;gap:16px}.toc{position:static;max-height:none}.content{padding:24px 22px}.content h2{font-size:1.4rem}}@media print{body{background:white}.page-layout{display:block}.toc,.content{box-shadow:none}.toc{position:static;max-height:none}header{background:white;color:#111;padding:20px 0}header p{color:#333}main{padding:10px 0}.content h2{break-after:avoid}.content pre{white-space:pre-wrap}}
+</style></head><body><header><div class="wrap"><h1>Panduan Git dan Localhost SIAKAD</h1><p>Cara clone repository kelas, menjalankan Laravel di Windows/XAMPP, dan mengirim tugas melalui fork GitHub.</p></div></header>
+<main><div class="page-layout"><nav class="toc" aria-label="Daftar isi"><h2>Daftar Isi</h2><ol>
+<li><a href="#1-siapkan-perangkat-lunak">Siapkan perangkat lunak</a></li>
+<li><a href="#2-clone-repository">Clone repository</a></li>
+<li><a href="#3-siapkan-dependency-dan-file-environment">Siapkan dependency dan file environment</a></li>
+<li><a href="#4-buat-database-lokal">Buat database lokal</a></li>
+<li><a href="#5-buat-tabel-dan-data-contoh">Buat tabel dan data contoh</a></li>
+<li><a href="#6-jalankan-aplikasi-di-localhost">Jalankan aplikasi di localhost</a></li>
+<li><a href="#7-workflow-git-untuk-tugas-individu">Workflow Git untuk tugas individu</a></li>
+<li><a href="#8-ambil-pembaruan-dari-repository-kelas">Ambil pembaruan dari repository kelas</a></li>
+<li><a href="#9-perintah-git-yang-sering-digunakan">Perintah Git yang sering digunakan</a></li>
+<li><a href="#10-troubleshooting">Troubleshooting</a></li>
+<li><a href="#11-ringkasan-alur-pertama-kali">Ringkasan alur pertama kali</a></li>
+</ol></nav><article class="content">
+<p>Panduan ini menjelaskan cara mengambil source code dari GitHub, menjalankan aplikasi Laravel 13 di komputer Windows masing-masing, dan bekerja menggunakan Git tanpa mengubah branch utama bersama. Repository kelas: <a href="https://github.com/awaykeren/siakad">github.com/awaykeren/siakad</a>.</p>
+<h2 id="1-siapkan-perangkat-lunak">1. Siapkan perangkat lunak</h2>
+<p>Pastikan komputer memiliki:</p>
+<ul>
+<li>Git for Windows.</li>
+<li>PHP 8.3 atau lebih baru dan Composer.</li>
+<li>MySQL/MariaDB; XAMPP dapat dipakai untuk menyediakan MySQL dan phpMyAdmin.</li>
+<li>Browser web.</li>
+</ul>
+<p>Pastikan Git, PHP, dan Composer dapat dipanggil dari PowerShell. Contoh pengecekan:</p>
+<pre><code>git --version
+php --version
+composer --version</code></pre>
+<h2 id="2-clone-repository">2. Clone repository</h2>
+<p>Buka PowerShell, lalu clone repository ke folder kerja. Jangan clone ke dalam project Laravel lain.</p>
+<pre><code>cd D:\htdocs
+git clone https://github.com/awaykeren/siakad.git
+cd siakad</code></pre>
+<p>Perintah <code>git clone</code> membuat folder <code>D:\htdocs\siakad</code> dan mengunduh branch <code>main</code>. Jika folder <code>siakad</code> sudah ada, pilih folder tujuan lain atau pindahkan/rename folder lama terlebih dahulu.</p>
+<h2 id="3-siapkan-dependency-dan-file-environment">3. Siapkan dependency dan file environment</h2>
+<p>File <code>.env</code> tidak disimpan di Git karena setiap komputer memakai konfigurasi dan password lokal. Buat <code>.env</code> dari file contoh, lalu pasang dependency Laravel:</p>
+<pre><code>Copy-Item .env.example .env
+composer install
+php artisan key:generate</code></pre>
+<p>Jangan mengunggah atau membagikan <code>.env</code>. Jangan menjalankan <code>git add .env</code>.</p>
+<h2 id="4-buat-database-lokal">4. Buat database lokal</h2>
+<p>Jalankan MySQL dari XAMPP. Di phpMyAdmin, buat database baru, misalnya <code>siakad_local</code>. Kemudian buka <code>.env</code> dan atur koneksi database. Contoh konfigurasi XAMPP default:</p>
+<pre><code>DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=siakad_local
+DB_USERNAME=root
+DB_PASSWORD=</code></pre>
+<p>Jika MySQL memakai password atau port berbeda, sesuaikan nilainya. Setelah mengubah <code>.env</code>, konfigurasi Laravel dapat dibersihkan dengan:</p>
+<pre><code>php artisan config:clear</code></pre>
+<h2 id="5-buat-tabel-dan-data-contoh">5. Buat tabel dan data contoh</h2>
+<p>Jalankan migration untuk membuat tabel:</p>
+<pre><code>php artisan migrate</code></pre>
+<p>Seeder default membuat 50 data mahasiswa. Seeder dosen dan mata kuliah dijalankan dengan perintah terpisah:</p>
+<pre><code>php artisan db:seed
+php artisan db:seed --class=SiakadSeeder</code></pre>
+<p>Urutan ini membuat dosen serta mata kuliah pengampu, selain mahasiswa. Untuk database baru, jangan memakai <code>migrate:fresh</code> kecuali memang siap menghapus seluruh tabel dan datanya.</p>
+<h2 id="6-jalankan-aplikasi-di-localhost">6. Jalankan aplikasi di localhost</h2>
+<p>Dari folder proyek, jalankan server Laravel:</p>
+<pre><code>php artisan serve</code></pre>
+<p>Buka alamat yang dicetak Artisan, biasanya <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a>. Menu utama tersedia di:</p>
+<ul>
+<li><code>/dashboard</code></li>
+<li><code>/mahasiswa</code></li>
+<li><code>/dosen</code></li>
+<li><code>/mata-kuliah</code></li>
+</ul>
+<p>Untuk menghentikan server, tekan <code>Ctrl+C</code> di terminal. MySQL harus tetap aktif saat aplikasi memakai database.</p>
+<p>Saat ini Bootstrap dan DataTables dimuat dari CDN, jadi browser perlu koneksi internet untuk menampilkan gaya halaman dan DataTables. <code>npm install</code> tidak diperlukan untuk menjalankan CRUD yang sudah ada. Jika nanti mengubah aset Vite/CSS/JavaScript proyek, pasang Node.js lalu jalankan <code>npm install</code> dan <code>npm run dev</code>.</p>
+<h2 id="7-workflow-git-untuk-tugas-individu">7. Workflow Git untuk tugas individu</h2>
+<p>Repository kelas dapat dibaca dan di-clone semua mahasiswa, tetapi mahasiswa biasanya tidak memiliki izin push langsung ke branch <code>main</code> milik repository kelas. Gunakan <strong>fork</strong> untuk mengirim tugas:</p>
+<ol>
+<li>Buka repository kelas di GitHub dan klik <strong>Fork</strong>.</li>
+<li>Clone fork milik akun sendiri. Ganti <code>USERNAME</code> dengan nama akun GitHub mahasiswa.</li>
+</ol>
+<pre><code>cd D:\htdocs
+git clone https://github.com/USERNAME/siakad.git
+cd siakad
+git remote add upstream https://github.com/awaykeren/siakad.git
+git remote -v</code></pre>
+<p>Jika Git belum mengetahui identitas pembuat commit, atur nama dan email GitHub di komputer sendiri:</p>
+<pre><code>git config --global user.name &quot;Nama Mahasiswa&quot;
+git config --global user.email &quot;email-github@example.com&quot;</code></pre>
+<p><code>origin</code> menunjuk ke fork mahasiswa; <code>upstream</code> menunjuk ke repository kelas. Siapkan <code>.env</code>, dependency, dan database pada clone tersebut seperti langkah sebelumnya.</p>
+<p>Buat branch baru untuk setiap tugas, lalu commit dan push ke fork:</p>
+<pre><code>git switch -c fitur/nama-tugas
+# edit file aplikasi
+git status
+git add app resources routes database docs
+git commit -m &quot;Tambahkan fitur yang dikerjakan&quot;
+git push -u origin fitur/nama-tugas</code></pre>
+<p>Setelah push, buka GitHub dan buat Pull Request dari branch di fork menuju branch <code>main</code> pada <code>awaykeren/siakad</code>. Jangan push tugas langsung ke <code>main</code> repository kelas.</p>
+<h2 id="8-ambil-pembaruan-dari-repository-kelas">8. Ambil pembaruan dari repository kelas</h2>
+<p>Sebelum mulai tugas baru, ambil perubahan terbaru dari upstream:</p>
+<pre><code>git switch main
+git pull upstream main
+git switch fitur/nama-tugas
+git merge main</code></pre>
+<p>Jika Git menyatakan ada konflik, buka file yang ditandai, pilih hasil gabungan yang benar, kemudian:</p>
+<pre><code>git add nama-file-yang-sudah-diperbaiki
+git commit -m &quot;Selesaikan konflik merge&quot;
+git push</code></pre>
+<p>Jika tidak memakai fork dan hanya meng-clone repository kelas untuk belajar, perbarui salinan lokal dengan <code>git pull origin main</code>. Clone biasa bersifat untuk membaca; perubahan tetap berada di komputer sampai di-commit dan dikirim ke remote yang dapat ditulisi.</p>
+<h2 id="9-perintah-git-yang-sering-digunakan">9. Perintah Git yang sering digunakan</h2>
+<pre><code>git status
+git branch
+git switch nama-branch
+git add nama-file
+git commit -m &quot;Pesan commit&quot;
+git pull upstream main
+git push</code></pre>
+<p>Gunakan <code>git status</code> sebelum commit agar tahu file yang berubah. Commit hanya source code yang diperlukan. Pastikan <code>.env</code>, password, token, dan database lokal tidak ikut commit.</p>
+<h2 id="10-troubleshooting">10. Troubleshooting</h2>
+<ul>
+<li><strong><code>composer</code> atau <code>php</code> tidak dikenali</strong>: pastikan PHP/Composer terpasang dan PATH Windows sudah dikonfigurasi; buka terminal baru setelah mengubah PATH.</li>
+<li><strong><code>No application encryption key has been specified</code></strong>: jalankan <code>php artisan key:generate</code>.</li>
+<li><strong>Database connection refused</strong>: pastikan MySQL XAMPP aktif, lalu cek host, port, nama database, username, dan password di <code>.env</code>.</li>
+<li><strong>Access denied for user</strong>: kredensial di <code>.env</code> tidak cocok dengan akun MySQL lokal.</li>
+<li><strong>Tabel belum ada</strong>: jalankan <code>php artisan migrate</code>.</li>
+<li><strong>Dosen belum tersedia di pilihan mata kuliah</strong>: jalankan <code>php artisan db:seed --class=SiakadSeeder</code> atau tambahkan dosen melalui menu Dosen.</li>
+<li><strong>Port 8000 sedang digunakan</strong>: jalankan <code>php artisan serve --port=8001</code>, lalu buka <code>http://127.0.0.1:8001</code>.</li>
+<li><strong>Push ditolak</strong>: pastikan remote <code>origin</code> adalah fork sendiri, branch bukan <code>main</code>, dan akun GitHub sudah terautentikasi melalui Git Credential Manager.</li>
+</ul>
+<h2 id="11-ringkasan-alur-pertama-kali">11. Ringkasan alur pertama kali</h2>
+<pre><code>cd D:\htdocs
+git clone https://github.com/awaykeren/siakad.git
+cd siakad
+Copy-Item .env.example .env
+composer install
+php artisan key:generate
+# Buat database siakad_local di phpMyAdmin, lalu atur .env
+php artisan migrate
+php artisan db:seed
+php artisan db:seed --class=SiakadSeeder
+php artisan serve</code></pre>
+</article></div></main><footer>Panduan untuk repository awaykeren/siakad · Cetak melalui menu Print browser</footer></body></html>
