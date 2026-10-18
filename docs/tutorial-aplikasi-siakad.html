@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="id"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Tutorial lengkap aplikasi SIAKAD dengan CRUD mahasiswa, dosen, mata kuliah, dan DataTables.">
+<title>Tutorial Aplikasi SIAKAD Sederhana</title>
+<style>
+:root{color-scheme:light;--ink:#172033;--muted:#5c667a;--blue:#1e3a8a;--line:#e2e8f0;--paper:#fff;--wash:#f4f7fb;--code:#111827}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--wash);color:var(--ink);font:16px/1.72 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:48px 24px}header .wrap,main{max-width:1440px;margin:auto}header h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.15;margin:0 0 12px}header p{max-width:850px;margin:0;color:#dbeafe;font-size:1.08rem}
+main{padding:28px 24px 64px}.page-layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:28px;align-items:start}.toc,.content{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 24px #1720330a}.toc{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow:auto;padding:22px 22px}.toc h2{font-size:1.2rem;margin:0 0 12px}.toc ol{padding-left:24px;margin:0}.toc li{padding:4px 2px}.toc a{color:var(--blue);text-decoration:none}.toc a:hover{text-decoration:underline}
+.content{padding:34px 48px;min-width:0}.content h2{font-size:1.65rem;line-height:1.3;border-bottom:1px solid var(--line);padding-bottom:10px;margin:42px 0 16px;scroll-margin-top:20px}.content h2:first-of-type{margin-top:12px}.content h3{font-size:1.18rem;margin:26px 0 8px}.content p{margin:10px 0}.content ul,.content ol{padding-left:26px}.content li{padding-left:4px;margin:4px 0}.content code{font:.9em/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;background:#eef2ff;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}.content pre{background:var(--code);color:#e5e7eb;padding:18px 20px;border-radius:10px;overflow:auto;line-height:1.55;margin:16px 0}.content pre code{background:none;color:inherit;padding:0;white-space:pre}.content a{color:var(--blue)}footer{text-align:center;color:var(--muted);padding:0 20px 32px;font-size:.9rem}
+@media(max-width:900px){header{padding:36px 20px}main{padding:20px 14px 48px}.page-layout{grid-template-columns:1fr;gap:16px}.toc{position:static;max-height:none}.content{padding:24px 22px}.content h2{font-size:1.4rem}}
+@media print{body{background:#fff}.page-layout{display:block}.toc,.content{box-shadow:none}.toc{position:static;max-height:none}header{background:#fff;color:#111;padding:20px 0}header p{color:#333}main{padding:10px 0}.content h2{break-after:avoid}.content pre{white-space:pre-wrap}}
+</style></head><body>
+<header><div class="wrap"><h1>Tutorial Aplikasi SIAKAD Sederhana</h1><p>Panduan membangun CRUD mahasiswa, dosen, dan mata kuliah dengan Laravel 13, Eloquent, Blade, Bootstrap 5, dan DataTables.</p></div></header>
+<main><div class="page-layout"><nav class="toc" aria-label="Daftar isi"><h2>Daftar Isi</h2><ol>
+<li><a href="#1-persiapan-lingkungan">Persiapan Lingkungan</a></li>
+<li><a href="#2-membuat-tabel-dengan-migration">Membuat Tabel dengan Migration</a></li>
+<li><a href="#3-membuat-model-dan-relasi-eloquent">Membuat Model dan Relasi Eloquent</a></li>
+<li><a href="#4-view-layout">View Layout</a></li>
+<li><a href="#5-dashboard">Dashboard</a></li>
+<li><a href="#6-crud-mahasiswa">CRUD Mahasiswa</a></li>
+<li><a href="#7-crud-dosen">CRUD Dosen</a></li>
+<li><a href="#8-crud-mata-kuliah">CRUD Mata Kuliah</a></li>
+<li><a href="#9-cara-menjalankan-aplikasi">Cara Menjalankan Aplikasi</a></li>
+<li><a href="#10-pengecekan-aplikasi">Pengecekan Aplikasi</a></li>
+<li><a href="#11-perintah-artisan-yang-berguna">Perintah Artisan yang Berguna</a></li>
+</ol></nav><article class="content">
+<p>Tutorial ini mengikuti struktur proyek Laravel 13 ini. Aplikasi mengelola mahasiswa, dosen, dan mata kuliah. Relasi yang sudah dibuat adalah satu dosen mengampu banyak mata kuliah; fitur KRS mahasiswa belum termasuk.</p>
+<h2 id="1-persiapan-lingkungan">1. Persiapan Lingkungan</h2>
+<h3>Kebutuhan</h3>
+<ul>
+<li>PHP 8.3 atau lebih baru, sesuai <code>composer.json</code>.</li>
+<li>Composer.</li>
+<li>MySQL/MariaDB dan server lokal seperti XAMPP.</li>
+<li>Node.js dan npm hanya jika akan mengompilasi aset frontend proyek.</li>
+</ul>
+<p>Buka terminal pada folder proyek:</p>
+<pre><code>cd D:\htdocs\laravel13-app
+composer install</code></pre>
+<p>Jika <code>.env</code> belum tersedia, salin konfigurasi contoh dan buat application key:</p>
+<pre><code>Copy-Item .env.example .env
+php artisan key:generate</code></pre>
+<p>Buat database kosong, misalnya <code>laravel13_app</code>, kemudian atur <code>.env</code> sesuai akun MySQL lokal:</p>
+<pre><code>DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel13_app
+DB_USERNAME=root
+DB_PASSWORD=</code></pre>
+<p>Jangan membagikan file <code>.env</code> yang berisi kredensial.</p>
+<h2 id="2-membuat-tabel-dengan-migration">2. Membuat Tabel dengan Migration</h2>
+<p>Migration berada di <code>database/migrations/</code>. Struktur tabel aplikasi:</p>
+<p>| Tabel | Kolom utama | Keterangan | |---|---|---| | <code>mahasiswa</code> | <code>nim</code>, <code>nama</code>, <code>prodi</code>, <code>email</code>, <code>nohp</code> | NIM unik; email dan nomor HP boleh kosong | | <code>dosen</code> | <code>nidn</code>, <code>nama</code>, <code>prodi</code> | NIDN unik | | <code>mata_kuliah</code> | <code>kode</code>, <code>nama</code>, <code>sks</code>, <code>dosen_id</code> | Kode unik; <code>dosen_id</code> foreign key ke <code>dosen.id</code> |</p>
+<p>Contoh definisi kolom relasi di migration mata kuliah:</p>
+<pre><code>$table-&gt;foreignId(&#x27;dosen_id&#x27;)
+    -&gt;constrained(&#x27;dosen&#x27;)
+    -&gt;restrictOnDelete();</code></pre>
+<p><code>restrictOnDelete()</code> menjaga agar dosen yang masih memiliki mata kuliah tidak dihapus begitu saja. Migration dosen membuat tabel khusus bernama <code>dosen</code>; fungsi <code>down()</code> menghapus tabel yang sama.</p>
+<p>Jalankan migration:</p>
+<pre><code>php artisan migrate</code></pre>
+<p><code>migrate</code> hanya mengubah struktur tabel, tidak otomatis menjalankan seeder. <code>DatabaseSeeder</code> memanggil <code>MahasiswaSeeder</code> untuk membuat 50 mahasiswa. Data contoh dosen dan mata kuliah ada di <code>SiakadSeeder</code> dan saat ini perlu dipanggil langsung:</p>
+<pre><code>php artisan db:seed
+php artisan db:seed --class=SiakadSeeder</code></pre>
+<p>Hindari <code>migrate:fresh</code> pada database berisi data karena perintah itu menghapus seluruh tabel.</p>
+<h2 id="3-membuat-model-dan-relasi-eloquent">3. Membuat Model dan Relasi Eloquent</h2>
+<p>Model menghubungkan kode PHP dengan tabel database. <code>$fillable</code> membatasi kolom yang boleh diisi melalui <code>create()</code> atau <code>update()</code>.</p>
+<h3>Mahasiswa</h3>
+<p><code>app/Models/Mahasiswa.php</code> menggunakan tabel <code>mahasiswa</code>, <code>HasFactory</code>, dan atribut <code>nim</code>, <code>nama</code>, <code>prodi</code>, <code>nohp</code>, <code>email</code> pada <code>$fillable</code>.</p>
+<h3>Dosen</h3>
+<p><code>app/Models/Dosen.php</code> menetapkan nama tabel khusus <code>dosen</code>, atribut <code>nidn</code>, <code>nama</code>, <code>prodi</code>, serta relasi satu ke banyak:</p>
+<pre><code>public function mataKuliah(): HasMany
+{
+    return $this-&gt;hasMany(MataKuliah::class, &#x27;dosen_id&#x27;);
+}</code></pre>
+<h3>MataKuliah</h3>
+<p><code>app/Models/MataKuliah.php</code> menggunakan tabel <code>mata_kuliah</code>, atribut <code>kode</code>, <code>nama</code>, <code>sks</code>, <code>dosen_id</code>, dan relasi balik:</p>
+<pre><code>public function dosen(): BelongsTo
+{
+    return $this-&gt;belongsTo(Dosen::class, &#x27;dosen_id&#x27;);
+}</code></pre>
+<h2 id="4-view-layout">4. View Layout</h2>
+<p>Layout bersama ada di <code>resources/views/layouts/app.blade.php</code>. File ini menyediakan kerangka HTML, Bootstrap 5, navbar, sidebar, area konten <code>@yield('content')</code>, serta slot <code>@stack('styles')</code> dan <code>@stack('scripts')</code>.</p>
+<p>Komponen navigasi berada di:</p>
+<ul>
+<li><code>resources/views/components/navbar.blade.php</code></li>
+<li><code>resources/views/components/sidebar.blade.php</code></li>
+</ul>
+<p>Setiap halaman memakai layout bersama, misalnya:</p>
+<pre><code>@extends(&#x27;layouts.app&#x27;)
+
+@section(&#x27;title&#x27;, &#x27;Data Mahasiswa&#x27;)
+
+@section(&#x27;content&#x27;)
+    {{-- Konten halaman --}}
+@endsection</code></pre>
+<p>Sidebar menghubungkan pengguna ke route bernama dashboard, mahasiswa, dosen, dan mata kuliah. Memakai <code>route('mahasiswa.index')</code> membuat tautan tidak bergantung pada URL yang ditulis manual.</p>
+<h2 id="5-dashboard">5. Dashboard</h2>
+<p>Route <code>/dashboard</code> di <code>routes/web.php</code> memanggil <code>DashboardController@index</code>. Controller menghitung jumlah data aktual dari database:</p>
+<pre><code>$jumlahMahasiswa = Mahasiswa::count();
+$jumlahDosen = Dosen::count();
+$jumlahMataKuliah = MataKuliah::count();</code></pre>
+<p>Nilai dikirim ke <code>resources/views/dashboard.blade.php</code>, yang menampilkan ringkasan dalam tiga kartu. File utama dashboard:</p>
+<ul>
+<li>Route: <code>routes/web.php</code></li>
+<li>Controller: <code>app/Http/Controllers/DashboardController.php</code></li>
+<li>View: <code>resources/views/dashboard.blade.php</code></li>
+</ul>
+<h2 id="6-crud-mahasiswa">6. CRUD Mahasiswa</h2>
+<p>CRUD mahasiswa mengelola NIM, nama, program studi, email, dan nomor HP.</p>
+<h3>Model</h3>
+<p><code>app/Models/Mahasiswa.php</code> menetapkan tabel <code>mahasiswa</code>, <code>$fillable</code>, dan <code>HasFactory</code> agar factory/seeder dapat membuat data contoh.</p>
+<h3>Controller</h3>
+<p><code>app/Http/Controllers/MahasiswaController.php</code> menangani operasi berikut:</p>
+<ul>
+<li><code>index()</code>: mencari, memfilter, mengurutkan, dan membuat pagination daftar.</li>
+<li><code>create()</code> dan <code>store()</code>: menampilkan form dan menyimpan data tervalidasi.</li>
+<li><code>edit()</code> dan <code>update()</code>: memuat serta memperbarui mahasiswa. Validasi NIM unik mengabaikan record yang sedang diedit.</li>
+<li><code>destroy()</code>: menghapus mahasiswa.</li>
+</ul>
+<p>Validasi memastikan NIM unik, nama dan prodi wajib, email berformat benar bila diisi, dan panjang nilai sesuai batas kolom database.</p>
+<p>Pencarian mencakup NIM, nama, program studi, email, dan nomor HP. Filter memilih program studi. Kolom pengurutan dibatasi ke NIM/nama/prodi dan arahnya ke <code>asc</code> atau <code>desc</code>. Daftar menampilkan 10 record per halaman:</p>
+<pre><code>$mahasiswa = $query-&gt;orderBy($sort, $direction)
+    -&gt;paginate(10)
+    -&gt;withQueryString();</code></pre>
+<p><code>withQueryString()</code> menjaga kata pencarian, filter, dan pengurutan ketika pengguna berpindah halaman.</p>
+<h3>View</h3>
+<p>View berada di <code>resources/views/mahasiswa/</code>:</p>
+<ul>
+<li><code>index.blade.php</code>: tabel mahasiswa, form pencarian/filter/pengurutan, pagination, dan tombol aksi.</li>
+<li><code>create.blade.php</code>: form tambah.</li>
+<li><code>edit.blade.php</code>: form edit dengan method <code>PUT</code>.</li>
+<li><code>_form.blade.php</code>: partial field bersama untuk tambah dan edit.</li>
+</ul>
+<p>Form memakai <code>@csrf</code>; penghapusan memakai <code>@method('DELETE')</code>. Pesan validasi tampil dekat field masing-masing.</p>
+<h2 id="7-crud-dosen">7. CRUD Dosen</h2>
+<p>CRUD dosen mengelola NIDN, nama, dan program studi. Relasinya satu dosen memiliki banyak mata kuliah.</p>
+<h3>Model</h3>
+<p><code>app/Models/Dosen.php</code> menentukan tabel <code>dosen</code>, atribut <code>$fillable</code>, dan <code>mataKuliah(): HasMany</code>. Relasi eksplisit memakai foreign key <code>dosen_id</code>.</p>
+<h3>Controller</h3>
+<p><code>app/Http/Controllers/DosenController.php</code> menangani daftar, form tambah/edit, penyimpanan, pembaruan, dan penghapusan. <code>index()</code> memuat relasi dengan <code>Dosen::with('mataKuliah')</code> agar data mata kuliah tersedia tanpa query tambahan untuk setiap dosen.</p>
+<p>Daftar dosen mendukung pencarian NIDN/nama/prodi, filter prodi, pengurutan NIDN/nama/prodi, serta pagination 10 data per halaman. Nama kolom sorting dipilih dari whitelist. <code>withQueryString()</code> mempertahankan parameter saat pindah halaman.</p>
+<h3>View</h3>
+<p>View berada di <code>resources/views/dosen/</code>:</p>
+<ul>
+<li><code>index.blade.php</code>: tabel dosen, mata kuliah pengampu, pencarian/filter/sorting/pagination, dan aksi.</li>
+<li><code>create.blade.php</code>: form tambah dosen.</li>
+<li><code>edit.blade.php</code>: form perubahan data dosen.</li>
+</ul>
+<p>Kolom mata kuliah menampilkan kode dan nama tiap mata kuliah. Jika belum ada relasi, halaman menampilkan keterangan bahwa dosen belum memiliki mata kuliah. Foreign key membatasi penghapusan dosen yang masih menjadi pengampu.</p>
+<h2 id="8-crud-mata-kuliah">8. CRUD Mata Kuliah</h2>
+<p>CRUD mata kuliah mengelola kode, nama, jumlah SKS, serta dosen pengampu. Pengguna membuat dosen lebih dahulu, lalu memilih dosen dari form mata kuliah.</p>
+<h3>Model</h3>
+<p><code>app/Models/MataKuliah.php</code> menetapkan tabel <code>mata_kuliah</code>, <code>$fillable</code> termasuk <code>dosen_id</code>, dan relasi <code>dosen(): BelongsTo</code>.</p>
+<h3>Controller</h3>
+<p><code>app/Http/Controllers/MataKuliahController.php</code> menyediakan daftar, tambah, simpan, edit, update, dan hapus. <code>index()</code> memuat dosen dengan <code>MataKuliah::with('dosen')</code>. Form tambah/edit mengambil daftar dosen dari database.</p>
+<p>Validasi memeriksa kode unik, nama wajib, SKS bilangan bulat, serta <code>dosen_id</code> harus cocok dengan record pada tabel dosen. Saat update, validasi kode unik mengabaikan mata kuliah yang sedang diedit.</p>
+<h3>View</h3>
+<p>View berada di <code>resources/views/mata-kuliah/</code>:</p>
+<ul>
+<li><code>index.blade.php</code>: tabel kode, nama, SKS, dosen pengampu, dan aksi CRUD.</li>
+<li><code>create.blade.php</code>: form mata kuliah baru.</li>
+<li><code>edit.blade.php</code>: form pembaruan.</li>
+<li><code>_form.blade.php</code>: partial field termasuk dropdown dosen.</li>
+</ul>
+<h3>DataTables dengan jQuery</h3>
+<p>Daftar mata kuliah menggunakan DataTables di browser. CSS DataTables Bootstrap 5 dimasukkan melalui <code>@push('styles')</code>; jQuery 3.7.1 dimuat sebelum file DataTables core dan adapter Bootstrap 5 melalui <code>@push('scripts')</code>.</p>
+<p>Inisialisasi memakai plugin jQuery dan bahasa bawaan DataTables:</p>
+<pre><code>$(&#x27;#mata-kuliah-table&#x27;).DataTable({
+    pageLength: 10,
+    lengthMenu: [10, 25, 50, 100],
+    order: [[2, &#x27;asc&#x27;]],
+    columnDefs: [
+        { targets: [0, 5], orderable: false, searchable: false }
+    ]
+});</code></pre>
+<p>DataTables menyediakan search, sorting, pengaturan jumlah baris, dan pagination di browser. Kolom nomor dan aksi dikecualikan dari pencarian/pengurutan; nomor baris dihitung ulang setiap kali tabel digambar. Bahasa memakai default karena tidak ada pengaturan <code>language</code>. Tabel kosong ditangani oleh DataTables, jadi jangan tambahkan row <code>colspan</code> di <code>&lt;tbody&gt;</code>.</p>
+<h2 id="9-cara-menjalankan-aplikasi">9. Cara Menjalankan Aplikasi</h2>
+<p>Pastikan MySQL berjalan, database pada <code>.env</code> tersedia, dan migration sudah diterapkan. Jalankan server pengembangan Laravel:</p>
+<pre><code>php artisan serve</code></pre>
+<p>Buka URL lokal yang dicetak oleh Artisan, biasanya <code>http://127.0.0.1:8000</code>. Untuk mencoba aplikasi, buka <code>/dashboard</code>, <code>/mahasiswa</code>, <code>/dosen</code>, atau <code>/mata-kuliah</code>.</p>
+<p>Alur relasi yang disarankan:</p>
+<ol>
+<li>Tambahkan dosen melalui <code>/dosen/create</code>.</li>
+<li>Tambahkan mata kuliah melalui <code>/mata-kuliah/create</code> dan pilih dosen pengampu.</li>
+<li>Periksa mata kuliah di halaman daftar dosen.</li>
+<li>Tambahkan mahasiswa melalui <code>/mahasiswa/create</code>.</li>
+</ol>
+<p>Halaman index mata kuliah memuat DataTables dari CDN, sehingga browser perlu koneksi internet untuk memuat aset jQuery/DataTables.</p>
+<h2 id="10-pengecekan-aplikasi">10. Pengecekan Aplikasi</h2>
+<p>Periksa alur ini di browser:</p>
+<ol>
+<li>Pastikan tiap halaman daftar terbuka saat tabel berisi data atau kosong.</li>
+<li>Buat data valid untuk mahasiswa, dosen, dan mata kuliah; pastikan record tampil.</li>
+<li>Kirim form tanpa field wajib dan periksa pesan validasi.</li>
+<li>Coba NIM, NIDN, atau kode mata kuliah duplikat.</li>
+<li>Edit record tanpa mengganti nilai uniknya.</li>
+<li>Cari, filter, urutkan, dan pindah halaman pada daftar mahasiswa/dosen.</li>
+<li>Pada mata kuliah, uji search, sorting, jumlah baris, pagination, serta kolom aksi DataTables.</li>
+<li>Pastikan mata kuliah yang dibuat muncul pada halaman dosen yang dipilih.</li>
+<li>Coba menghapus dosen yang masih mengampu mata kuliah; relasi foreign key harus mencegahnya.</li>
+</ol>
+<h2 id="11-perintah-artisan-yang-berguna">11. Perintah Artisan yang Berguna</h2>
+<pre><code>php artisan route:list
+php artisan migrate:status
+php artisan migrate
+php artisan db:seed
+php artisan db:seed --class=SiakadSeeder
+php artisan serve</code></pre>
+<p><code>php artisan migrate:rollback</code> membatalkan batch migration terakhir; gunakan hanya jika paham dampaknya. Hindari <code>migrate:fresh</code> pada database yang datanya ingin dipertahankan.</p>
+</article></div></main><footer>Tutorial proyek Laravel 13 · Gunakan menu Print browser untuk mencetak</footer></body></html>
