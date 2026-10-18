@@ -98,65 +98,7 @@ Untuk menghentikan server, tekan `Ctrl+C` di terminal. MySQL harus tetap aktif s
 
 Saat ini Bootstrap dan DataTables dimuat dari CDN, jadi browser perlu koneksi internet untuk menampilkan gaya halaman dan DataTables. `npm install` tidak diperlukan untuk menjalankan CRUD yang sudah ada. Jika nanti mengubah aset Vite/CSS/JavaScript proyek, pasang Node.js lalu jalankan `npm install` dan `npm run dev`.
 
-## 7. Workflow Git untuk tugas individu
-
-Repository kelas dapat dibaca dan di-clone semua mahasiswa, tetapi mahasiswa biasanya tidak memiliki izin push langsung ke branch `main` milik repository kelas. Gunakan **fork** untuk mengirim tugas:
-
-1. Buka repository kelas di GitHub dan klik **Fork**.
-2. Clone fork milik akun sendiri. Ganti `USERNAME` dengan nama akun GitHub mahasiswa.
-
-```powershell
-cd D:\htdocs
-git clone https://github.com/USERNAME/siakad.git
-cd siakad
-git remote add upstream https://github.com/awaykeren/siakad.git
-git remote -v
-```
-
-Jika Git belum mengetahui identitas pembuat commit, atur nama dan email GitHub di komputer sendiri:
-
-```powershell
-git config --global user.name "Nama Mahasiswa"
-git config --global user.email "email-github@example.com"
-```
-
-`origin` menunjuk ke fork mahasiswa; `upstream` menunjuk ke repository kelas. Siapkan `.env`, dependency, dan database pada clone tersebut seperti langkah sebelumnya.
-
-Buat branch baru untuk setiap tugas, lalu commit dan push ke fork:
-
-```powershell
-git switch -c fitur/nama-tugas
-# edit file aplikasi
-git status
-git add app resources routes database docs
-git commit -m "Tambahkan fitur yang dikerjakan"
-git push -u origin fitur/nama-tugas
-```
-
-Setelah push, buka GitHub dan buat Pull Request dari branch di fork menuju branch `main` pada `awaykeren/siakad`. Jangan push tugas langsung ke `main` repository kelas.
-
-## 8. Ambil pembaruan dari repository kelas
-
-Sebelum mulai tugas baru, ambil perubahan terbaru dari upstream:
-
-```powershell
-git switch main
-git pull upstream main
-git switch fitur/nama-tugas
-git merge main
-```
-
-Jika Git menyatakan ada konflik, buka file yang ditandai, pilih hasil gabungan yang benar, kemudian:
-
-```powershell
-git add nama-file-yang-sudah-diperbaiki
-git commit -m "Selesaikan konflik merge"
-git push
-```
-
-Jika tidak memakai fork dan hanya meng-clone repository kelas untuk belajar, perbarui salinan lokal dengan `git pull origin main`. Clone biasa bersifat untuk membaca; perubahan tetap berada di komputer sampai di-commit dan dikirim ke remote yang dapat ditulisi.
-
-## 9. Perintah Git yang sering digunakan
+## 7. Perintah Git yang sering digunakan
 
 ```powershell
 git status
@@ -170,7 +112,7 @@ git push
 
 Gunakan `git status` sebelum commit agar tahu file yang berubah. Commit hanya source code yang diperlukan. Pastikan `.env`, password, token, dan database lokal tidak ikut commit.
 
-## 10. Troubleshooting
+## 8. Troubleshooting
 
 - **`composer` atau `php` tidak dikenali**: pastikan PHP/Composer terpasang dan PATH Windows sudah dikonfigurasi; buka terminal baru setelah mengubah PATH.
 - **`No application encryption key has been specified`**: jalankan `php artisan key:generate`.
@@ -181,7 +123,7 @@ Gunakan `git status` sebelum commit agar tahu file yang berubah. Commit hanya so
 - **Port 8000 sedang digunakan**: jalankan `php artisan serve --port=8001`, lalu buka `http://127.0.0.1:8001`.
 - **Push ditolak**: pastikan remote `origin` adalah fork sendiri, branch bukan `main`, dan akun GitHub sudah terautentikasi melalui Git Credential Manager.
 
-## 11. Ringkasan alur pertama kali
+## 9. Ringkasan alur pertama kali
 
 ```powershell
 cd D:\htdocs

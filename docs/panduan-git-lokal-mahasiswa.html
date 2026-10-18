@@ -13,8 +13,6 @@ header{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:white;padding:48
 <li><a href="#4-buat-database-lokal">Buat database lokal</a></li>
 <li><a href="#5-buat-tabel-dan-data-contoh">Buat tabel dan data contoh</a></li>
 <li><a href="#6-jalankan-aplikasi-di-localhost">Jalankan aplikasi di localhost</a></li>
-<li><a href="#7-workflow-git-untuk-tugas-individu">Workflow Git untuk tugas individu</a></li>
-<li><a href="#8-ambil-pembaruan-dari-repository-kelas">Ambil pembaruan dari repository kelas</a></li>
 <li><a href="#9-perintah-git-yang-sering-digunakan">Perintah Git yang sering digunakan</a></li>
 <li><a href="#10-troubleshooting">Troubleshooting</a></li>
 <li><a href="#11-ringkasan-alur-pertama-kali">Ringkasan alur pertama kali</a></li>
@@ -73,41 +71,8 @@ php artisan db:seed --class=SiakadSeeder</code></pre>
 </ul>
 <p>Untuk menghentikan server, tekan <code>Ctrl+C</code> di terminal. MySQL harus tetap aktif saat aplikasi memakai database.</p>
 <p>Saat ini Bootstrap dan DataTables dimuat dari CDN, jadi browser perlu koneksi internet untuk menampilkan gaya halaman dan DataTables. <code>npm install</code> tidak diperlukan untuk menjalankan CRUD yang sudah ada. Jika nanti mengubah aset Vite/CSS/JavaScript proyek, pasang Node.js lalu jalankan <code>npm install</code> dan <code>npm run dev</code>.</p>
-<h2 id="7-workflow-git-untuk-tugas-individu">7. Workflow Git untuk tugas individu</h2>
-<p>Repository kelas dapat dibaca dan di-clone semua mahasiswa, tetapi mahasiswa biasanya tidak memiliki izin push langsung ke branch <code>main</code> milik repository kelas. Gunakan <strong>fork</strong> untuk mengirim tugas:</p>
-<ol>
-<li>Buka repository kelas di GitHub dan klik <strong>Fork</strong>.</li>
-<li>Clone fork milik akun sendiri. Ganti <code>USERNAME</code> dengan nama akun GitHub mahasiswa.</li>
-</ol>
-<pre><code>cd D:\htdocs
-git clone https://github.com/USERNAME/siakad.git
-cd siakad
-git remote add upstream https://github.com/awaykeren/siakad.git
-git remote -v</code></pre>
-<p>Jika Git belum mengetahui identitas pembuat commit, atur nama dan email GitHub di komputer sendiri:</p>
-<pre><code>git config --global user.name &quot;Nama Mahasiswa&quot;
-git config --global user.email &quot;email-github@example.com&quot;</code></pre>
-<p><code>origin</code> menunjuk ke fork mahasiswa; <code>upstream</code> menunjuk ke repository kelas. Siapkan <code>.env</code>, dependency, dan database pada clone tersebut seperti langkah sebelumnya.</p>
-<p>Buat branch baru untuk setiap tugas, lalu commit dan push ke fork:</p>
-<pre><code>git switch -c fitur/nama-tugas
-# edit file aplikasi
-git status
-git add app resources routes database docs
-git commit -m &quot;Tambahkan fitur yang dikerjakan&quot;
-git push -u origin fitur/nama-tugas</code></pre>
-<p>Setelah push, buka GitHub dan buat Pull Request dari branch di fork menuju branch <code>main</code> pada <code>awaykeren/siakad</code>. Jangan push tugas langsung ke <code>main</code> repository kelas.</p>
-<h2 id="8-ambil-pembaruan-dari-repository-kelas">8. Ambil pembaruan dari repository kelas</h2>
-<p>Sebelum mulai tugas baru, ambil perubahan terbaru dari upstream:</p>
-<pre><code>git switch main
-git pull upstream main
-git switch fitur/nama-tugas
-git merge main</code></pre>
-<p>Jika Git menyatakan ada konflik, buka file yang ditandai, pilih hasil gabungan yang benar, kemudian:</p>
-<pre><code>git add nama-file-yang-sudah-diperbaiki
-git commit -m &quot;Selesaikan konflik merge&quot;
-git push</code></pre>
-<p>Jika tidak memakai fork dan hanya meng-clone repository kelas untuk belajar, perbarui salinan lokal dengan <code>git pull origin main</code>. Clone biasa bersifat untuk membaca; perubahan tetap berada di komputer sampai di-commit dan dikirim ke remote yang dapat ditulisi.</p>
-<h2 id="9-perintah-git-yang-sering-digunakan">9. Perintah Git yang sering digunakan</h2>
+
+<h2 id="9-perintah-git-yang-sering-digunakan">7. Perintah Git yang sering digunakan</h2>
 <pre><code>git status
 git branch
 git switch nama-branch
@@ -116,7 +81,7 @@ git commit -m &quot;Pesan commit&quot;
 git pull upstream main
 git push</code></pre>
 <p>Gunakan <code>git status</code> sebelum commit agar tahu file yang berubah. Commit hanya source code yang diperlukan. Pastikan <code>.env</code>, password, token, dan database lokal tidak ikut commit.</p>
-<h2 id="10-troubleshooting">10. Troubleshooting</h2>
+<h2 id="10-troubleshooting">8. Troubleshooting</h2>
 <ul>
 <li><strong><code>composer</code> atau <code>php</code> tidak dikenali</strong>: pastikan PHP/Composer terpasang dan PATH Windows sudah dikonfigurasi; buka terminal baru setelah mengubah PATH.</li>
 <li><strong><code>No application encryption key has been specified</code></strong>: jalankan <code>php artisan key:generate</code>.</li>
@@ -127,7 +92,7 @@ git push</code></pre>
 <li><strong>Port 8000 sedang digunakan</strong>: jalankan <code>php artisan serve --port=8001</code>, lalu buka <code>http://127.0.0.1:8001</code>.</li>
 <li><strong>Push ditolak</strong>: pastikan remote <code>origin</code> adalah fork sendiri, branch bukan <code>main</code>, dan akun GitHub sudah terautentikasi melalui Git Credential Manager.</li>
 </ul>
-<h2 id="11-ringkasan-alur-pertama-kali">11. Ringkasan alur pertama kali</h2>
+<h2 id="11-ringkasan-alur-pertama-kali">9. Ringkasan alur pertama kali</h2>
 <pre><code>cd D:\htdocs
 git clone https://github.com/awaykeren/siakad.git
 cd siakad
