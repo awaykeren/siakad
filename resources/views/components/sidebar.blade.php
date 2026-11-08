@@ -21,6 +21,12 @@
             Mahasiswa
         </a>
 
+        <a href="{{ route('mahasiswa-api.index') }}"
+           class="nav-link text-dark rounded">
+            <i class="bi bi-cloud-arrow-down me-2"></i>
+            Mahasiswa (REST API)
+        </a>
+
         <a href="{{ route('dosen.index') }}"
            class="nav-link text-dark rounded">
             <i class="bi bi-person-badge me-2"></i>

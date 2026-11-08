@@ -27,6 +27,9 @@ use App\Http\Controllers\MahasiswaController;
 Route::resource('mahasiswa', MahasiswaController::class)
     ->except(['show']);
 
+// Halaman client yang memakai REST API /api/mahasiswa
+Route::view('/mahasiswa-api', 'mahasiswa-api.index')->name('mahasiswa-api.index');
+
 Route::resource('dosen', DosenController::class)
     ->except(['show']);
 
