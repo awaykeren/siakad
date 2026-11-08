@@ -37,3 +37,17 @@ Route::resource('mata-kuliah', MataKuliahController::class)
 Route::get('/mahasiswa/{nama}', function ($nama) {
     return 'Nama mahasiswa: ' . $nama;
 });
+
+use App\Http\Controllers\AuthController;
+
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])
+        ->name('login');
+
+    Route::post('/login', [AuthController::class, 'login'])
+        ->name('login.process');
+});
+
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->middleware('auth')
+    ->name('logout');
