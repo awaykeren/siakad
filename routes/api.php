@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\DosenApiController;
 use App\Http\Controllers\Api\MahasiswaApiController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,3 +24,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('mahasiswa', MahasiswaApiController::class)
     ->names('api.mahasiswa');
+
+/*
+| Contoh sederhana: API dosen (bagian 1 - menampilkan data)
+|   GET /api/dosen       -> semua dosen
+|   GET /api/dosen/{id}  -> satu dosen
+*/
+Route::get('/dosen', [DosenApiController::class, 'index'])->name('api.dosen.index');
+Route::get('/dosen/{id}', [DosenApiController::class, 'show'])->name('api.dosen.show');

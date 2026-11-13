@@ -30,6 +30,9 @@ Route::resource('mahasiswa', MahasiswaController::class)
 // Halaman client yang memakai REST API /api/mahasiswa
 Route::view('/mahasiswa-api', 'mahasiswa-api.index')->name('mahasiswa-api.index');
 
+// Halaman client yang memakai REST API /api/dosen
+Route::view('/dosen-api', 'dosen-api.index')->name('dosen-api.index');
+
 Route::resource('dosen', DosenController::class)
     ->except(['show']);
 

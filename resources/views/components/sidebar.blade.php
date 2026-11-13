@@ -33,6 +33,12 @@
             Data Dosen
         </a>
 
+        <a href="{{ route('dosen-api.index') }}"
+           class="nav-link text-dark rounded">
+            <i class="bi bi-cloud-arrow-down me-2"></i>
+            Dosen (REST API)
+        </a>
+
         <a href="{{ route('mata-kuliah.index') }}"
            class="nav-link text-dark rounded">
             <i class="bi bi-book me-2"></i>
