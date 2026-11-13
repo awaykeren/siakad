@@ -26,9 +26,15 @@ Route::apiResource('mahasiswa', MahasiswaApiController::class)
     ->names('api.mahasiswa');
 
 /*
-| Contoh sederhana: API dosen (bagian 1 - menampilkan data)
-|   GET /api/dosen       -> semua dosen
-|   GET /api/dosen/{id}  -> satu dosen
+| Contoh sederhana: API dosen
+|   GET    /api/dosen       -> semua dosen
+|   GET    /api/dosen/{id}  -> satu dosen
+|   POST   /api/dosen       -> tambah dosen
+|   PUT    /api/dosen/{id}  -> edit dosen
+|   DELETE /api/dosen/{id}  -> hapus dosen
 */
 Route::get('/dosen', [DosenApiController::class, 'index'])->name('api.dosen.index');
 Route::get('/dosen/{id}', [DosenApiController::class, 'show'])->name('api.dosen.show');
+Route::post('/dosen', [DosenApiController::class, 'store'])->name('api.dosen.store');
+Route::put('/dosen/{id}', [DosenApiController::class, 'update'])->name('api.dosen.update');
+Route::delete('/dosen/{id}', [DosenApiController::class, 'destroy'])->name('api.dosen.destroy');
