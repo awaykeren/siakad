@@ -1,13 +1,13 @@
 # Panduan Git dan Menjalankan SIAKAD di Localhost Mahasiswa
 
-Panduan ini menjelaskan cara mengambil source code dari GitHub, menjalankan aplikasi Laravel 13 di komputer Windows masing-masing, dan bekerja menggunakan Git tanpa mengubah branch utama bersama. Repository kelas: [github.com/awaykeren/siakad](https://github.com/awaykeren/siakad).
+Panduan ini menjelaskan cara mengambil source code dari GitHub, menjalankan aplikasi Laravel 12 di komputer Windows masing-masing, dan bekerja menggunakan Git tanpa mengubah branch utama bersama. Repository kelas: [github.com/awaykeren/siakad](https://github.com/awaykeren/siakad).
 
 ## 1. Siapkan perangkat lunak
 
 Pastikan komputer memiliki:
 
 - Git for Windows.
-- PHP 8.3 atau lebih baru dan Composer.
+- PHP 8.2 atau lebih baru dan Composer.
 - MySQL/MariaDB; XAMPP dapat dipakai untuk menyediakan MySQL dan phpMyAdmin.
 - Browser web.
 

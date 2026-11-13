@@ -12,7 +12,7 @@ main{padding:28px 24px 64px}.page-layout{display:grid;grid-template-columns:280p
 @media(max-width:900px){header{padding:36px 20px}main{padding:20px 14px 48px}.page-layout{grid-template-columns:1fr;gap:16px}.toc{position:static;max-height:none}.content{padding:24px 22px}.content h2{font-size:1.4rem}}
 @media print{body{background:#fff}.page-layout{display:block}.toc,.content{box-shadow:none}.toc{position:static;max-height:none}header{background:#fff;color:#111;padding:20px 0}header p{color:#333}main{padding:10px 0}.content h2{break-after:avoid}.content pre{white-space:pre-wrap}}
 </style></head><body>
-<header><div class="wrap"><h1>Tutorial Aplikasi SIAKAD Sederhana</h1><p>Panduan membangun CRUD mahasiswa, dosen, dan mata kuliah dengan Laravel 13, Eloquent, Blade, Bootstrap 5, dan DataTables.</p></div></header>
+<header><div class="wrap"><h1>Tutorial Aplikasi SIAKAD Sederhana</h1><p>Panduan membangun CRUD mahasiswa, dosen, dan mata kuliah dengan Laravel 12, Eloquent, Blade, Bootstrap 5, dan DataTables.</p></div></header>
 <main><div class="page-layout"><nav class="toc" aria-label="Daftar isi"><h2>Daftar Isi</h2><ol>
 <li><a href="#1-persiapan-lingkungan">Persiapan Lingkungan</a></li>
 <li><a href="#2-membuat-tabel-dengan-migration">Membuat Tabel dengan Migration</a></li>
@@ -26,11 +26,11 @@ main{padding:28px 24px 64px}.page-layout{display:grid;grid-template-columns:280p
 <li><a href="#10-pengecekan-aplikasi">Pengecekan Aplikasi</a></li>
 <li><a href="#11-perintah-artisan-yang-berguna">Perintah Artisan yang Berguna</a></li>
 </ol></nav><article class="content">
-<p>Tutorial ini mengikuti struktur proyek Laravel 13 ini. Aplikasi mengelola mahasiswa, dosen, dan mata kuliah. Relasi yang sudah dibuat adalah satu dosen mengampu banyak mata kuliah; fitur KRS mahasiswa belum termasuk.</p>
+<p>Tutorial ini mengikuti struktur proyek Laravel 12 ini. Aplikasi mengelola mahasiswa, dosen, dan mata kuliah. Relasi yang sudah dibuat adalah satu dosen mengampu banyak mata kuliah; fitur KRS mahasiswa belum termasuk.</p>
 <h2 id="1-persiapan-lingkungan">1. Persiapan Lingkungan</h2>
 <h3>Kebutuhan</h3>
 <ul>
-<li>PHP 8.3 atau lebih baru, sesuai <code>composer.json</code>.</li>
+<li>PHP 8.2 atau lebih baru, sesuai <code>composer.json</code>.</li>
 <li>Composer.</li>
 <li>MySQL/MariaDB dan server lokal seperti XAMPP.</li>
 <li>Node.js dan npm hanya jika akan mengompilasi aset frontend proyek.</li>
@@ -208,4 +208,4 @@ php artisan db:seed
 php artisan db:seed --class=SiakadSeeder
 php artisan serve</code></pre>
 <p><code>php artisan migrate:rollback</code> membatalkan batch migration terakhir; gunakan hanya jika paham dampaknya. Hindari <code>migrate:fresh</code> pada database yang datanya ingin dipertahankan.</p>
-</article></div></main><footer>Tutorial proyek Laravel 13 · Gunakan menu Print browser untuk mencetak</footer></body></html>
+</article></div></main><footer>Tutorial proyek Laravel 12 · Gunakan menu Print browser untuk mencetak</footer></body></html>

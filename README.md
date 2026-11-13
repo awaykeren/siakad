@@ -1,4 +1,4 @@
-# SIAKAD Sederhana — Laravel 13
+# SIAKAD Sederhana — Laravel 12
 
 Aplikasi Sistem Informasi Akademik (SIAKAD) sederhana untuk bahan praktikum Laravel. Aplikasi ini mengelola data **mahasiswa**, **dosen**, dan **mata kuliah**, serta berisi contoh **REST API** beserta halaman client yang memakai JavaScript `fetch()`.
 
@@ -16,7 +16,7 @@ Aplikasi Sistem Informasi Akademik (SIAKAD) sederhana untuk bahan praktikum Lara
 
 ## Kebutuhan
 
-- PHP **8.3** atau lebih baru (ekstensi `pdo_mysql`, `mbstring`, `openssl`, `fileinfo`)
+- PHP **8.2** atau lebih baru (ekstensi `pdo_mysql`, `mbstring`, `openssl`, `fileinfo`)
 - [Composer](https://getcomposer.org/)
 - MySQL atau MariaDB (misalnya dari XAMPP)
 - Git

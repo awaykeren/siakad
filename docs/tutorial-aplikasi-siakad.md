@@ -1,12 +1,12 @@
 # Tutorial Aplikasi SIAKAD Sederhana
 
-Tutorial ini mengikuti struktur proyek Laravel 13 ini. Aplikasi mengelola mahasiswa, dosen, dan mata kuliah. Relasi yang sudah dibuat adalah satu dosen mengampu banyak mata kuliah; fitur KRS mahasiswa belum termasuk.
+Tutorial ini mengikuti struktur proyek Laravel 12 ini. Aplikasi mengelola mahasiswa, dosen, dan mata kuliah. Relasi yang sudah dibuat adalah satu dosen mengampu banyak mata kuliah; fitur KRS mahasiswa belum termasuk.
 
 ## 1. Persiapan Lingkungan
 
 ### Kebutuhan
 
-- PHP 8.3 atau lebih baru, sesuai `composer.json`.
+- PHP 8.2 atau lebih baru, sesuai `composer.json`.
 - Composer.
 - MySQL/MariaDB dan server lokal seperti XAMPP.
 - Node.js dan npm hanya jika akan mengompilasi aset frontend proyek.
