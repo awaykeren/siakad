@@ -1,58 +1,180 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SIAKAD Sederhana — Laravel 13
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi Sistem Informasi Akademik (SIAKAD) sederhana untuk bahan praktikum Laravel. Aplikasi ini mengelola data **mahasiswa**, **dosen**, dan **mata kuliah**, serta berisi contoh **REST API** beserta halaman client yang memakai JavaScript `fetch()`.
 
-## About Laravel
+## Fitur
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+| Menu | Keterangan |
+|---|---|
+| Dashboard | Ringkasan data |
+| Mahasiswa | CRUD mahasiswa dengan Blade (pencarian, filter prodi, urut, paging) |
+| Mahasiswa (REST API) | CRUD mahasiswa lewat `/api/mahasiswa` (Form Request, API Resource, paging) |
+| Data Dosen | CRUD dosen dengan Blade |
+| Dosen (REST API) | Contoh REST API sederhana lewat `/api/dosen` |
+| Mata Kuliah | CRUD mata kuliah; satu dosen mengampu banyak mata kuliah |
+| Login | Halaman login dan middleware `role` |
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Kebutuhan
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP **8.3** atau lebih baru (ekstensi `pdo_mysql`, `mbstring`, `openssl`, `fileinfo`)
+- [Composer](https://getcomposer.org/)
+- MySQL atau MariaDB (misalnya dari XAMPP)
+- Git
+- Node.js dan npm **tidak wajib**. Semua halaman SIAKAD memakai Bootstrap dari CDN.
 
-## Learning Laravel
+## Cara Install
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 1. Clone repository
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/awaykeren/siakad.git
+cd siakad
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Install dependensi PHP
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Buat file `.env`
 
-## Code of Conduct
+Windows (PowerShell):
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```powershell
+Copy-Item .env.example .env
+```
 
-## Security Vulnerabilities
+Git Bash / Linux / macOS:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cp .env.example .env
+```
 
-## License
+Lalu buat application key:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan key:generate
+```
+
+### 4. Siapkan database
+
+Buat database kosong bernama `siakad` melalui phpMyAdmin atau terminal MySQL:
+
+```sql
+CREATE DATABASE siakad;
+```
+
+Buka file `.env`, lalu ubah bagian database (secara bawaan masih `sqlite`) menjadi:
+
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=siakad
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Sesuaikan `DB_PORT`, `DB_USERNAME`, dan `DB_PASSWORD` dengan MySQL di komputer Anda. Jika MySQL berjalan di port lain (misalnya 3307), ganti `DB_PORT`.
+
+### 5. Buat tabel dan isi data contoh
+
+```bash
+php artisan migrate
+php artisan db:seed
+php artisan db:seed --class=SiakadSeeder
+php artisan db:seed --class=AdminUserSeeder
+```
+
+| Perintah | Isi data |
+|---|---|
+| `db:seed` | 50 mahasiswa acak |
+| `--class=SiakadSeeder` | 3 dosen beserta mata kuliahnya |
+| `--class=AdminUserSeeder` | Akun admin untuk login |
+
+### 6. Jalankan aplikasi
+
+```bash
+php artisan serve
+```
+
+Buka di browser: <http://127.0.0.1:8000/dashboard>
+
+## Akun Demo
+
+| Email | Password |
+|---|---|
+| `admin@siakad.test` | `admin123` |
+
+> Akun ini hanya untuk latihan. Jangan memakai password yang sama di server sungguhan.
+
+## Alamat Penting
+
+| Halaman | URL |
+|---|---|
+| Dashboard | <http://127.0.0.1:8000/dashboard> |
+| Login | <http://127.0.0.1:8000/login> |
+| Mahasiswa (REST API) | <http://127.0.0.1:8000/mahasiswa-api> |
+| Dosen (REST API) | <http://127.0.0.1:8000/dosen-api> |
+| JSON mahasiswa | <http://127.0.0.1:8000/api/mahasiswa> |
+| JSON dosen | <http://127.0.0.1:8000/api/dosen> |
+
+Jika memakai XAMPP tanpa `php artisan serve`, alamatnya menjadi `http://localhost/<nama-folder>/public/...`, misalnya `http://localhost/siakad/public/dashboard`.
+
+## Endpoint REST API
+
+Kirim header `Accept: application/json` pada setiap request. Untuk POST dan PUT, kirim body dalam format JSON.
+
+### Mahasiswa — `/api/mahasiswa`
+
+| Method | Endpoint | Keterangan |
+|---|---|---|
+| GET | `/api/mahasiswa` | Daftar mahasiswa. Query opsional: `search`, `prodi`, `sort`, `direction`, `per_page`, `page` |
+| POST | `/api/mahasiswa` | Tambah mahasiswa (`nim`, `nama`, `prodi`, `email`, `nohp`) |
+| GET | `/api/mahasiswa/{id}` | Detail mahasiswa |
+| PUT | `/api/mahasiswa/{id}` | Ubah mahasiswa |
+| DELETE | `/api/mahasiswa/{id}` | Hapus mahasiswa |
+
+### Dosen — `/api/dosen`
+
+| Method | Endpoint | Keterangan |
+|---|---|---|
+| GET | `/api/dosen` | Semua dosen |
+| GET | `/api/dosen/{id}` | Detail dosen |
+| POST | `/api/dosen` | Tambah dosen (`nidn`, `nama`, `prodi`) |
+| PUT | `/api/dosen/{id}` | Ubah dosen |
+| DELETE | `/api/dosen/{id}` | Hapus dosen (ditolak dengan status 409 jika masih mengampu mata kuliah) |
+
+Contoh dengan curl:
+
+```bash
+curl -H "Accept: application/json" http://127.0.0.1:8000/api/dosen
+```
+
+## Menjalankan Test
+
+Test memakai SQLite di memori, sehingga database `siakad` tidak tersentuh.
+
+```bash
+php artisan test
+```
+
+## Materi dan Panduan
+
+| File | Isi |
+|---|---|
+| [docs/materi-rest-api-mahasiswa.docx](docs/materi-rest-api-mahasiswa.docx) | Materi REST API, dari perancangan endpoint sampai penerapan di client |
+| [docs/tutorial-aplikasi-siakad.md](docs/tutorial-aplikasi-siakad.md) | Tutorial membangun aplikasi SIAKAD |
+| [docs/panduan-git-lokal-mahasiswa.md](docs/panduan-git-lokal-mahasiswa.md) | Panduan Git lokal untuk mahasiswa |
+
+## Masalah yang Sering Muncul
+
+| Masalah | Penyebab dan solusi |
+|---|---|
+| `could not find driver` | Ekstensi `pdo_mysql` belum aktif. Aktifkan di `php.ini`, lalu restart terminal. |
+| `SQLSTATE[HY000] [2002]` / connection refused | MySQL belum berjalan, atau `DB_HOST`/`DB_PORT` di `.env` salah. |
+| `Unknown database 'siakad'` | Database belum dibuat (lihat langkah 4). |
+| `No application encryption key has been specified` | Jalankan `php artisan key:generate`. |
+| Perubahan `.env` tidak terbaca | Jalankan `php artisan config:clear`. |
+| Dosen tidak bisa dihapus | Dosen masih mengampu mata kuliah. Hapus atau pindahkan mata kuliahnya terlebih dahulu. |
