@@ -65,7 +65,7 @@ Buat database kosong bernama `siakad` melalui phpMyAdmin atau terminal MySQL:
 CREATE DATABASE siakad;
 ```
 
-Buka file `.env`, lalu ubah bagian database (secara bawaan masih `sqlite`) menjadi:
+Buka file `.env`, lalu ubah bagian database (secara bawaan masih `sqlite`). **Hapus tanda `#`** di depan baris `DB_HOST` sampai `DB_PASSWORD`, sehingga menjadi:
 
 ```dotenv
 DB_CONNECTION=mysql
